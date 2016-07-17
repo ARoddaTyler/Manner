@@ -13,18 +13,7 @@ use Libraries.Game.Audio3D
 use Libraries.Game.Graphics.Label
 use Libraries.Sound.Speech
 
-/*
-    This is a default class for creating a game in Quorum. Note that the Main 
-    action begins by calling StartGame(), which loads a window a game can 
-    be displayed in. The action CreateGame is where the game should load any 
-    assets, like images to be displayed, frames of animation, or sounds to be
-    played. 
-*/
 class Main is Game, KeyboardListener
-    /*
-        This action, Main, starts our computer program. In Quorum, programs always
-        begin from Main.
-    */
     integer lives = 3
     // The camera
     PerspectiveCamera camera = undefined
@@ -80,12 +69,6 @@ class Main is Game, KeyboardListener
         StartGame()
     end
 
-    /*
-        This action sets up the default values for a game. For example, we might
-        use the Libraries.Game.Graphics.Drawable class to load up an image or 
-        a shape. Or, we might add a Libraries.Interface.Button for making something clickable
-        or a Libraries.Interface.TextBox for gathering user input in a game.
-    */
     action CreateGame
 
         // Initialize camera position, and direction
@@ -185,18 +168,11 @@ class Main is Game, KeyboardListener
         goal:SetPosition(80, -2, 0)
         Add(goal)
 
-        gameOverZone:SetSize(250, 50)
+        gameOverZone:SetSize(45)
         gameOverZone:SetPosition(350, 350)
-
 
     end
 
-    /*
-        The update action is called on every "frame" of animation in a game. This
-        action should be used to do operations on items. So, for example, we 
-        might use this action to change frames of animation, to rotate items, 
-        or to make creatures jump.
-    */
     action Update(number seconds)
 
         // Moves the character every update depending on the values of the 3 fields
@@ -254,14 +230,6 @@ class Main is Game, KeyboardListener
             end 
         end
     end
-
-//    action AddAudioToBox(Model box, Audio3D sound)
-//        sound:LoadToStream("Sound/carSound.wav")
-//        sound:SetVolume(0.3)
-//        sound:Play()
-//        sound:EnableLooping()
-//        box:Add(sound)
-//    end
 
     action PressedKey(KeyboardEvent event)
         if event:keyCode = event:UP
@@ -346,11 +314,12 @@ class Main is Game, KeyboardListener
         gameOverZone:SetText("Congratulations! You reached the goal")
         Add(gameOverZone)
         StopCharacter()
-        if speakerLimit < 1 // we do that to ensure that the message plays just once
+        if speakerLimit >= 0 // we do that to ensure that the message plays just once
             talk:Say("Congratulations! You reached the goal! You win!", true)
-            speakerLimit = 1
+            speakerLimit = -1
         end
         RemoveKeyboardListener(me)
+        Exit()
     end
     
 end
